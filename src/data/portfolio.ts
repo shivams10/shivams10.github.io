@@ -4,7 +4,7 @@
  */
 
 export const SITE_URL = (
-  process.env.NEXT_PUBLIC_SITE_URL ?? "https://shivamshukla.dev"
+  process.env.NEXT_PUBLIC_SITE_URL ?? "https://shivams10.github.io"
 ).replace(/\/$/, "");
 
 export const profile = {
