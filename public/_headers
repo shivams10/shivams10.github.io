@@ -1,0 +1,18 @@
+# Netlify / Cloudflare Pages headers. (Vercel applies equivalent caching to /_next/static automatically.)
+
+/*
+  X-Content-Type-Options: nosniff
+  Referrer-Policy: strict-origin-when-cross-origin
+  Permissions-Policy: camera=(), microphone=(), geolocation=(), interest-cohort=()
+  X-Frame-Options: DENY
+  Cross-Origin-Opener-Policy: same-origin
+
+# Fingerprinted build assets never change: cache for a year.
+/_next/static/*
+  Cache-Control: public, max-age=31536000, immutable
+
+# Images and the résumé: cache for a week, revalidate after.
+/images/*
+  Cache-Control: public, max-age=604800, stale-while-revalidate=86400
+/Shivam_Shukla_Resume.pdf
+  Cache-Control: public, max-age=86400

@@ -1,36 +1,39 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Shivam Shukla — Portfolio
 
-## Getting Started
+Personal portfolio built with Next.js 16 (App Router), TypeScript and Tailwind CSS v4, exported as a fully static site.
 
-First, run the development server:
+## Run it
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+npm install
+npm run dev     # http://localhost:3000
+npm run build   # static site written to ./out
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Edit content
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+All copy lives in [`src/data/portfolio.ts`](src/data/portfolio.ts): profile, stats, Lighthouse gauges, experience, projects, skills, education and links. Components read from it, so most updates never touch a component.
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+- **Résumé:** replace `public/Shivam_Shukla_Resume.pdf`.
+- **Site URL:** set `NEXT_PUBLIC_SITE_URL` (e.g. `https://shivamshukla.dev`) at build time. It drives the canonical URL, Open Graph tags, `sitemap.xml` and `robots.txt`.
 
-## Learn More
+## Structure
 
-To learn more about Next.js, take a look at the following resources:
+```
+src/app/            layout (fonts, SEO, JSON-LD), page, OG image, sitemap, robots, icon
+src/components/     Nav, Hero, LighthouseCard, Experience, Projects, Skills, Contact
+src/data/           portfolio.ts (all content)
+```
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Notes
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+- Scroll reveals are pure CSS (`animation-timeline`). The only client components are the theme toggle and the screenshot lightbox (`ProjectShot`, built on `<dialog>` + View Transitions).
+- Light/dark follows the OS by default; the toggle stores an override in `localStorage`.
+- Animations are disabled under `prefers-reduced-motion`.
+- The social preview (`/og.png`) and home-screen icon (`/apple-touch-icon.png`) are generated at build time from `src/data/portfolio.ts` by route handlers in `src/app/og.png/` and `src/app/apple-touch-icon.png/`. They are real `.png` files so every host serves them as `image/png`.
+- CSS is inlined into the HTML (`experimental.inlineCss`) to remove the render-blocking stylesheet request.
+- `public/_headers` sets long-lived caching and security headers on Netlify and Cloudflare Pages.
 
-## Deploy on Vercel
+## Deploy
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Any static host works. On Vercel, import the repo and add the `NEXT_PUBLIC_SITE_URL` env var. On Netlify or Cloudflare Pages, use build command `npm run build` and output directory `out`.
